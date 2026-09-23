@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¤»¦X±m¡u1Áx9¸}¡v10ª`Áo©ú²Õ¦X­pºâ¾÷</title>
+    <title>å…­åˆå½©ã€Œ1è†½9è…³ã€10æ³¨è°æ˜çµ„åˆè¨ˆç®—æ©Ÿ</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -141,18 +141,18 @@
 <body>
 
 <div class="container">
-    <h1>¤»¦X±m¡u1Áx9¸}¡vÁo©ú²Õ¦X­pºâ¾÷</h1>
-    <p class="subtitle">¦Û°Ê®M¥Î 10 ª`ÂĞ»\¯x°} (Smart Matrix)?¥Í¦¨ 10 ª`«O©³²Õ¦X</p>
+    <h1>å…­åˆå½©ã€Œ1è†½9è…³ã€è°æ˜çµ„åˆè¨ˆç®—æ©Ÿ</h1>
+    <p class="subtitle">è‡ªå‹•å¥—ç”¨ 10 æ³¨è¦†è“‹çŸ©é™£ (Smart Matrix)ãƒ»ç”Ÿæˆ 10 æ³¨ä¿åº•çµ„åˆ</p>
 
     <div class="input-group">
-        <div class="section-title">¿é¤J 1 ­ÓÁx (Banker)</div>
+        <div class="section-title">è¼¸å…¥ 1 å€‹è†½ (Banker)</div>
         <div class="grid-1">
-            <input type="number" id="banker" class="calc-input" min="1" max="49" placeholder="Áx½X">
+            <input type="number" id="banker" class="calc-input" min="1" max="49" placeholder="è†½ç¢¼">
         </div>
     </div>
 
     <div class="input-group">
-        <div class="section-title">¿é¤J 9 ­Ó¸} (Legs)</div>
+        <div class="section-title">è¼¸å…¥ 9 å€‹è…³ (Legs)</div>
         <div class="grid-9">
             <input type="number" class="leg-input calc-input" min="1" max="49">
             <input type="number" class="leg-input calc-input" min="1" max="49">
@@ -166,11 +166,11 @@
         </div>
     </div>
 
-    <button onclick="generateMatrix()">²£¥Í 10 ª`²Õ¦X (Generate 10 Bets)</button>
+    <button onclick="generateMatrix()" id="calc-btn">ç”¢ç”Ÿ 10 æ³¨çµ„åˆ (Generate 10 Bets)</button>
     <div id="error" class="error-msg"></div>
 
     <div id="result-container">
-        <div class="section-title">§Aªº±MÄİ 10 ª`µ²ªG (¦@ $100)</div>
+        <div class="section-title">ä½ çš„å°ˆå±¬ 10 æ³¨çµæœ (å…± $100)</div>
         <div id="result-list"></div>
     </div>
 </div>
@@ -198,7 +198,7 @@
 
         const bankerVal = document.getElementById('banker').value;
         if (!bankerVal) {
-            errorDiv.innerText = '½Ğ¿é¤J 1 ­ÓÁx½X¡I';
+            errorDiv.innerText = 'è«‹è¼¸å…¥ 1 å€‹è†½ç¢¼ï¼';
             return;
         }
         const banker = parseInt(bankerVal);
@@ -207,7 +207,7 @@
         let legs = [];
         for (let input of legInputs) {
             if (!input.value) {
-                errorDiv.innerText = '½Ğ¶ñº¡ 9 ­Ó¸}½X¡I';
+                errorDiv.innerText = 'è«‹å¡«æ»¿ 9 å€‹è…³ç¢¼ï¼';
                 return;
             }
             legs.push(parseInt(input.value));
@@ -216,13 +216,13 @@
         const allNumbers = [banker, ...legs];
         const outOfRange = allNumbers.some(n => n < 1 || n > 49);
         if (outOfRange) {
-            errorDiv.innerText = '¸¹½X¥²¶·¦b 1 ¦Ü 49 ¤§¶¡¡I';
+            errorDiv.innerText = 'è™Ÿç¢¼å¿…é ˆåœ¨ 1 è‡³ 49 ä¹‹é–“ï¼';
             return;
         }
 
         const uniqueNumbers = new Set(allNumbers);
         if (uniqueNumbers.size !== 10) {
-            errorDiv.innerText = 'Áx½X¤Î¸}½X¤£¥i¦³­«½Æ¼Æ¦r¡I';
+            errorDiv.innerText = 'è†½ç¢¼åŠè…³ç¢¼ä¸å¯æœ‰é‡è¤‡æ•¸å­—ï¼';
             return;
         }
 
@@ -250,7 +250,7 @@
             
             const labelDiv = document.createElement('div');
             labelDiv.className = 'bet-number-label';
-            labelDiv.innerText = `²Ä ${index + 1} ª``;
+            labelDiv.innerText = `ç¬¬ ${index + 1} æ³¨`;
             rowDiv.appendChild(labelDiv);
 
             currentBet.forEach(num => {
@@ -260,7 +260,7 @@
                 ball.innerText = num;
                 if (num === banker) {
                     ball.classList.add('banker-highlight');
-                    ball.title = 'Áx½X (Banker)';
+                    ball.title = 'è†½ç¢¼ (Banker)';
                 }
                 rowDiv.appendChild(ball);
             });
@@ -271,14 +271,13 @@
         resultContainer.style.display = 'block';
     }
 
-    // ¥[¤JºÊÅ¥ Enter Áä¥\¯à
     document.addEventListener('DOMContentLoaded', function() {
         const inputs = document.querySelectorAll('.calc-input');
         inputs.forEach(input => {
             input.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
-                    e.preventDefault(); // ¨¾¤î¹w³]¦æ¬°
-                    generateMatrix();   // Ä²µo­pºâ
+                    e.preventDefault(); 
+                    generateMatrix();   
                 }
             });
         });
