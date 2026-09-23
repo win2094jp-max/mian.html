@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>六合彩「1膽9腳」聰明組合計算機 (Smart Matrix Calculator)</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #333333;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: var(--card-bg);
+            max-width: 650px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary);
+            border-left: 4px solid var(--secondary);
+            padding-left: 10px;
+        }
+        .input-group {
+            margin-bottom: 25px;
+        }
+        .grid-1 {
+            display: grid;
+            grid-template-columns: 100px;
+            gap: 15px;
+        }
+        .grid-9 {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 12px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 5px;
+            font-size: 18px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        input[type="number"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 8px rgba(44, 62, 80, 0.2);
+        }
+        button {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #1a252f;
+        }
+        .error-msg {
+            color: var(--secondary);
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 20px;
+        }
+        #result-container {
+            margin-top: 35px;
+            display: none;
+        }
+        .bet-row {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            background: #fafafa;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .bet-number-label {
+            font-weight: bold;
+            color: #555;
+            width: 60px;
+        }
+        .ball {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            margin-right: 8px;
+            box-shadow: inset -2px -2px 6px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.1);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        /* 號碼球特效 */
+        .ball.banker-highlight {
+            border: 2px solid gold;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>六合彩「1膽9腳」聰明組合計算機</h1>
+    <p class="subtitle">自動套用數學覆蓋矩陣 (Smart Matrix)・生成 9 注保底組合</p>
+
+    <div class="input-group">
+        <div class="section-title">輸入 1 個膽 (Banker)</div>
+        <div class="grid-1">
+            <input type="number" id="banker" min="1" max="49" placeholder="膽碼">
+        </div>
+    </div>
+
+    <div class="input-group">
+        <div class="section-title">輸入 9 個腳 (Legs)</div>
+        <div class="grid-9">
+            <input type="number" class="leg-input" min="1" max="49">
+            <input type="number" class="leg-input" min="1" max="49">
+            <input type="number" class="leg-input" min="1" max="49">
+            <input type="number" class="leg-input" min="1" max="49">
+            <input type="number" class="leg-input" min="1" max="49">
+            <input type="number" class="leg-input" min="1" max="49">
+            <input type="number" class="leg-input" min="1" max="49">
+            <input type="number" class="leg-input" min="1" max="49">
+            <input type="number" class="leg-input" min="1" max="49">
+        </div>
+    </div>
+
+    <button onclick="generateMatrix()">產生 9 注組合 (Generate 9 Bets)</button>
+    <div id="error" class="error-msg"></div>
+
+    <div id="result-container">
+        <div class="section-title">你的專屬 9 注結果 (共 $90)</div>
+        <div id="result-list"></div>
+    </div>
+</div>
+
+<script>
+    // 獲取正宗六合彩波色 (Red, Blue, Green)
+    function getBallColor(num) {
+        const red = [1, 2, 7, 8, 12, 13, 18, 19, 23, 24, 29, 30, 34, 35, 40, 45];
+        const blue = [3, 4, 9, 10, 14, 15, 20, 25, 26, 31, 36, 37, 41, 42, 47, 48];
+        const green = [5, 6, 11, 16, 17, 21, 22, 27, 28, 32, 33, 38, 39, 43, 44, 46, 49];
+        
+        if (red.includes(num)) return '#e74c3c';
+        if (blue.includes(num)) return '#3498db';
+        if (green.includes(num)) return '#2ecc71';
+        return '#7f8c8d'; // Fallback
+    }
+
+    function generateMatrix() {
+        const errorDiv = document.getElementById('error');
+        const resultContainer = document.getElementById('result-container');
+        const resultList = document.getElementById('result-list');
+        
+        errorDiv.innerText = '';
+        resultList.innerHTML = '';
+        resultContainer.style.display = 'none';
+
+        // 1. 獲取資料並驗證
+        const bankerVal = document.getElementById('banker').value;
+        if (!bankerVal) {
+            errorDiv.innerText = '請輸入 1 個膽碼！(Please enter 1 Banker)';
+            return;
+        }
+        const banker = parseInt(bankerVal);
+
+        const legInputs = document.querySelectorAll('.leg-input');
+        let legs = [];
+        for (let input of legInputs) {
+            if (!input.value) {
+                errorDiv.innerText = '請填滿 9 個腳碼！(Please enter all 9 Legs)';
+                return;
+            }
+            legs.push(parseInt(input.value));
+        }
+
+        // 檢查號碼範圍是否在 1-49
+        const allNumbers = [banker, ...legs];
+        const outOfRange = allNumbers.some(n => n < 1 || n > 49);
+        if (outOfRange) {
+            errorDiv.innerText = '號碼必須在 1 至 49 之間！(Numbers must be between 1-49)';
+            return;
+        }
+
+        // 檢查是否有重複號碼
+        const uniqueNumbers = new Set(allNumbers);
+        if (uniqueNumbers.size !== 10) {
+            errorDiv.innerText = '膽碼及腳碼不可有重複數字！(Numbers cannot be duplicated)';
+            return;
+        }
+
+        // 2. 將腳碼由小至大排序
+        legs.sort((a, b) => a - b);
+
+        // 3. 套用 $90 聰明組合覆蓋矩陣 (9 注公式)
+        // 陣列 index 由 0 開始，所以腳碼 1-9 對應 legs[0] - legs[8]
+        const matrixIndices = [
+            [1, 2, 3, 5, 8], // 注1: 代號 2, 3, 4, 6, 9
+            [0, 1, 2, 3, 7], // 注2: 代號 1, 2, 3, 4, 8
+            [0, 1, 2, 4, 5], // 注3: 代號 1, 2, 3, 5, 6
+            [0, 1, 3, 6, 8], // 注4: 代號 1, 2, 4, 7, 9
+            [1, 4, 5, 6, 7], // 注5: 代號 2, 5, 6, 7, 8
+            [2, 3, 4, 5, 6], // 注6: 代號 3, 4, 5, 6, 7
+            [2, 4, 6, 7, 8], // 注7: 代號 3, 5, 7, 8, 9
+            [0, 3, 4, 7, 8], // 注8: 代號 1, 4, 5, 8, 9
+            [0, 5, 6, 7, 8]  // 注9: 代號 1, 6, 7, 8, 9
+        ];
+
+        // 4. 渲染結果
+        matrixIndices.forEach((indices, index) => {
+            // 組合：1個膽 + 5個矩陣分配的腳
+            let currentBet = [banker, ...indices.map(i => legs[i])];
+            
+            // 將這 6 個字由小至大排序
+            currentBet.sort((a, b) => a - b);
+
+            // 建立 UI row
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'bet-row';
+            
+            const labelDiv = document.createElement('div');
+            labelDiv.className = 'bet-number-label';
+            labelDiv.innerText = `第 ${index + 1} 注`;
+            rowDiv.appendChild(labelDiv);
+
+            currentBet.forEach(num => {
+                const ball = document.createElement('div');
+                ball.className = 'ball';
+                ball.style.backgroundColor = getBallColor(num);
+                ball.innerText = num;
+                // 如果是膽碼，加一個外框特效識別
+                if (num === banker) {
+                    ball.classList.add('banker-highlight');
+                    ball.title = '膽碼 (Banker)';
+                }
+                rowDiv.appendChild(ball);
+            });
+
+            resultList.appendChild(rowDiv);
+        });
+
+        resultContainer.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
