@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>å…­åˆå½©ã€Œ1è†½9è…³ã€è°æ˜çµ„åˆè¨ˆç®—æ©Ÿ (Smart Matrix Calculator)</title>
+    <title>¤»¦X±m¡u1Áx9¸}¡v10ª`Áo©ú²Õ¦X­pºâ¾÷</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -132,7 +132,6 @@
             box-shadow: inset -2px -2px 6px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.1);
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
-        /* è™Ÿç¢¼çƒç‰¹æ•ˆ */
         .ball.banker-highlight {
             border: 2px solid gold;
             box-sizing: border-box;
@@ -142,42 +141,41 @@
 <body>
 
 <div class="container">
-    <h1>å…­åˆå½©ã€Œ1è†½9è…³ã€è°æ˜çµ„åˆè¨ˆç®—æ©Ÿ</h1>
-    <p class="subtitle">è‡ªå‹•å¥—ç”¨æ•¸å­¸è¦†è“‹çŸ©é™£ (Smart Matrix)ãƒ»ç”Ÿæˆ 9 æ³¨ä¿åº•çµ„åˆ</p>
+    <h1>¤»¦X±m¡u1Áx9¸}¡vÁo©ú²Õ¦X­pºâ¾÷</h1>
+    <p class="subtitle">¦Û°Ê®M¥Î 10 ª`ÂĞ»\¯x°} (Smart Matrix)?¥Í¦¨ 10 ª`«O©³²Õ¦X</p>
 
     <div class="input-group">
-        <div class="section-title">è¼¸å…¥ 1 å€‹è†½ (Banker)</div>
+        <div class="section-title">¿é¤J 1 ­ÓÁx (Banker)</div>
         <div class="grid-1">
-            <input type="number" id="banker" min="1" max="49" placeholder="è†½ç¢¼">
+            <input type="number" id="banker" class="calc-input" min="1" max="49" placeholder="Áx½X">
         </div>
     </div>
 
     <div class="input-group">
-        <div class="section-title">è¼¸å…¥ 9 å€‹è…³ (Legs)</div>
+        <div class="section-title">¿é¤J 9 ­Ó¸} (Legs)</div>
         <div class="grid-9">
-            <input type="number" class="leg-input" min="1" max="49">
-            <input type="number" class="leg-input" min="1" max="49">
-            <input type="number" class="leg-input" min="1" max="49">
-            <input type="number" class="leg-input" min="1" max="49">
-            <input type="number" class="leg-input" min="1" max="49">
-            <input type="number" class="leg-input" min="1" max="49">
-            <input type="number" class="leg-input" min="1" max="49">
-            <input type="number" class="leg-input" min="1" max="49">
-            <input type="number" class="leg-input" min="1" max="49">
+            <input type="number" class="leg-input calc-input" min="1" max="49">
+            <input type="number" class="leg-input calc-input" min="1" max="49">
+            <input type="number" class="leg-input calc-input" min="1" max="49">
+            <input type="number" class="leg-input calc-input" min="1" max="49">
+            <input type="number" class="leg-input calc-input" min="1" max="49">
+            <input type="number" class="leg-input calc-input" min="1" max="49">
+            <input type="number" class="leg-input calc-input" min="1" max="49">
+            <input type="number" class="leg-input calc-input" min="1" max="49">
+            <input type="number" class="leg-input calc-input" min="1" max="49">
         </div>
     </div>
 
-    <button onclick="generateMatrix()">ç”¢ç”Ÿ 9 æ³¨çµ„åˆ (Generate 9 Bets)</button>
+    <button onclick="generateMatrix()">²£¥Í 10 ª`²Õ¦X (Generate 10 Bets)</button>
     <div id="error" class="error-msg"></div>
 
     <div id="result-container">
-        <div class="section-title">ä½ çš„å°ˆå±¬ 9 æ³¨çµæœ (å…± $90)</div>
+        <div class="section-title">§Aªº±MÄİ 10 ª`µ²ªG (¦@ $100)</div>
         <div id="result-list"></div>
     </div>
 </div>
 
 <script>
-    // ç²å–æ­£å®—å…­åˆå½©æ³¢è‰² (Red, Blue, Green)
     function getBallColor(num) {
         const red = [1, 2, 7, 8, 12, 13, 18, 19, 23, 24, 29, 30, 34, 35, 40, 45];
         const blue = [3, 4, 9, 10, 14, 15, 20, 25, 26, 31, 36, 37, 41, 42, 47, 48];
@@ -186,7 +184,7 @@
         if (red.includes(num)) return '#e74c3c';
         if (blue.includes(num)) return '#3498db';
         if (green.includes(num)) return '#2ecc71';
-        return '#7f8c8d'; // Fallback
+        return '#7f8c8d'; 
     }
 
     function generateMatrix() {
@@ -198,10 +196,9 @@
         resultList.innerHTML = '';
         resultContainer.style.display = 'none';
 
-        // 1. ç²å–è³‡æ–™ä¸¦é©—è­‰
         const bankerVal = document.getElementById('banker').value;
         if (!bankerVal) {
-            errorDiv.innerText = 'è«‹è¼¸å…¥ 1 å€‹è†½ç¢¼ï¼(Please enter 1 Banker)';
+            errorDiv.innerText = '½Ğ¿é¤J 1 ­ÓÁx½X¡I';
             return;
         }
         const banker = parseInt(bankerVal);
@@ -210,59 +207,50 @@
         let legs = [];
         for (let input of legInputs) {
             if (!input.value) {
-                errorDiv.innerText = 'è«‹å¡«æ»¿ 9 å€‹è…³ç¢¼ï¼(Please enter all 9 Legs)';
+                errorDiv.innerText = '½Ğ¶ñº¡ 9 ­Ó¸}½X¡I';
                 return;
             }
             legs.push(parseInt(input.value));
         }
 
-        // æª¢æŸ¥è™Ÿç¢¼ç¯„åœæ˜¯å¦åœ¨ 1-49
         const allNumbers = [banker, ...legs];
         const outOfRange = allNumbers.some(n => n < 1 || n > 49);
         if (outOfRange) {
-            errorDiv.innerText = 'è™Ÿç¢¼å¿…é ˆåœ¨ 1 è‡³ 49 ä¹‹é–“ï¼(Numbers must be between 1-49)';
+            errorDiv.innerText = '¸¹½X¥²¶·¦b 1 ¦Ü 49 ¤§¶¡¡I';
             return;
         }
 
-        // æª¢æŸ¥æ˜¯å¦æœ‰é‡è¤‡è™Ÿç¢¼
         const uniqueNumbers = new Set(allNumbers);
         if (uniqueNumbers.size !== 10) {
-            errorDiv.innerText = 'è†½ç¢¼åŠè…³ç¢¼ä¸å¯æœ‰é‡è¤‡æ•¸å­—ï¼(Numbers cannot be duplicated)';
+            errorDiv.innerText = 'Áx½X¤Î¸}½X¤£¥i¦³­«½Æ¼Æ¦r¡I';
             return;
         }
 
-        // 2. å°‡è…³ç¢¼ç”±å°è‡³å¤§æ’åº
         legs.sort((a, b) => a - b);
 
-        // 3. å¥—ç”¨ $90 è°æ˜çµ„åˆè¦†è“‹çŸ©é™£ (9 æ³¨å…¬å¼)
-        // é™£åˆ— index ç”± 0 é–‹å§‹ï¼Œæ‰€ä»¥è…³ç¢¼ 1-9 å°æ‡‰ legs[0] - legs[8]
         const matrixIndices = [
-            [1, 2, 3, 5, 8], // æ³¨1: ä»£è™Ÿ 2, 3, 4, 6, 9
-            [0, 1, 2, 3, 7], // æ³¨2: ä»£è™Ÿ 1, 2, 3, 4, 8
-            [0, 1, 2, 4, 5], // æ³¨3: ä»£è™Ÿ 1, 2, 3, 5, 6
-            [0, 1, 3, 6, 8], // æ³¨4: ä»£è™Ÿ 1, 2, 4, 7, 9
-            [1, 4, 5, 6, 7], // æ³¨5: ä»£è™Ÿ 2, 5, 6, 7, 8
-            [2, 3, 4, 5, 6], // æ³¨6: ä»£è™Ÿ 3, 4, 5, 6, 7
-            [2, 4, 6, 7, 8], // æ³¨7: ä»£è™Ÿ 3, 5, 7, 8, 9
-            [0, 3, 4, 7, 8], // æ³¨8: ä»£è™Ÿ 1, 4, 5, 8, 9
-            [0, 5, 6, 7, 8]  // æ³¨9: ä»£è™Ÿ 1, 6, 7, 8, 9
+            [0, 1, 2, 3, 4], 
+            [0, 1, 5, 6, 7], 
+            [0, 2, 4, 6, 8], 
+            [0, 3, 5, 7, 8], 
+            [1, 2, 5, 7, 8], 
+            [1, 3, 4, 6, 8], 
+            [1, 3, 5, 6, 7], 
+            [2, 3, 4, 5, 7], 
+            [2, 4, 5, 6, 8], 
+            [2, 3, 6, 7, 8]  
         ];
 
-        // 4. æ¸²æŸ“çµæœ
         matrixIndices.forEach((indices, index) => {
-            // çµ„åˆï¼š1å€‹è†½ + 5å€‹çŸ©é™£åˆ†é…çš„è…³
             let currentBet = [banker, ...indices.map(i => legs[i])];
-            
-            // å°‡é€™ 6 å€‹å­—ç”±å°è‡³å¤§æ’åº
             currentBet.sort((a, b) => a - b);
 
-            // å»ºç«‹ UI row
             const rowDiv = document.createElement('div');
             rowDiv.className = 'bet-row';
             
             const labelDiv = document.createElement('div');
             labelDiv.className = 'bet-number-label';
-            labelDiv.innerText = `ç¬¬ ${index + 1} æ³¨`;
+            labelDiv.innerText = `²Ä ${index + 1} ª``;
             rowDiv.appendChild(labelDiv);
 
             currentBet.forEach(num => {
@@ -270,10 +258,9 @@
                 ball.className = 'ball';
                 ball.style.backgroundColor = getBallColor(num);
                 ball.innerText = num;
-                // å¦‚æœæ˜¯è†½ç¢¼ï¼ŒåŠ ä¸€å€‹å¤–æ¡†ç‰¹æ•ˆè­˜åˆ¥
                 if (num === banker) {
                     ball.classList.add('banker-highlight');
-                    ball.title = 'è†½ç¢¼ (Banker)';
+                    ball.title = 'Áx½X (Banker)';
                 }
                 rowDiv.appendChild(ball);
             });
@@ -283,6 +270,19 @@
 
         resultContainer.style.display = 'block';
     }
+
+    // ¥[¤JºÊÅ¥ Enter Áä¥\¯à
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('.calc-input');
+        inputs.forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // ¨¾¤î¹w³]¦æ¬°
+                    generateMatrix();   // Ä²µo­pºâ
+                }
+            });
+        });
+    });
 </script>
 
 </body>
